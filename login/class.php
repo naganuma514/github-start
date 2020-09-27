@@ -1,37 +1,32 @@
 <?php
 
-class Login {
+class Login
+{
     private $name;
     private $pass1;
     private $pass2;
 
-    public function getName() {
-        return $this->name;
+    public function getName()
+    {
+        return [
+            $this->name,
+            $this->pass1,
+            $this->pass2,
+               ];
     }
-    public function getPass1() {
-        return $this->pass1;
+    public function setName($name, $pass1, $pass2)
+    {
+        $this->name=htmlspecialchars($name, ENT_QUOTES, 'utf-8');
+        $this->pass1=htmlspecialchars($pass1, ENT_QUOTES, 'utf-8');
+        $this->pass2=htmlspecialchars($pass2, ENT_QUOTES, 'utf-8');
     }
-    public function getPass2() {
-        return $this->pass2;
-    }
-    public function setName($name) {
-        $this->name=$name;
-    }
-    public function setPass1($pass1) {
-        $this->pass1=$pass1;
-    }
-    public function setPass2($pass2) {
-        $this->pass2=$pass2;
-    }
-}
+}  
 
 $user = new Login();
-$user->setName($_POST['name']);
-echo $user->getName();
-$user->setPass1($_POST['pass1']);
-echo $user->getPass1();
-$user->setPass2($_POST['pass2']);
-echo $user->getpass2();
-
+$user->setName($_POST['name'],$_POST['pass1'],$_POST['pass2']);
+$userid[]=$user->getName(); 
+foreach($user->getName() as $val){
+    echo $val;
+  }
 
 ?>
