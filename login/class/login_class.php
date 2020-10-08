@@ -1,3 +1,4 @@
+
 <?php
 //ログインクラス 
 class Login
@@ -8,28 +9,28 @@ class Login
         $err = [];
 
         $this->params = filter_input_array(INPUT_POST, [
-            'user_name' => [],
-            'email' => [],
-            'password' => [],
-            'password_conf' => []
+            'email' => FILTER_VALIDATE_EMAIL,
+            'password' => FILTER_DEFAULT,
         ]);
 
         foreach((array)$this->params as $key => $value) {
-            if($value === '') {
+            if($value === NULL || $value == false) {
                 $err[] = $this->checkInput($key);
             }
         }
 
-        $err[] = $this->mailCheck($this->params['email']);
-        $err[] = $this->samePass($this->params['password'], $this->params['password_conf']);
+        if(isset($this->params['email'])) {
+            $Emsg = $this->mailCheck($this->params['email']);
+            if(isset($Emsg)) {
+                $err[] = $Emsg;
+            }
+        }
 
         return $err;
-
     }
 
     public function getUserInfo() {
-        $user =$this->params;
-        unset($user['password_conf']);
+        $user = (object)$this->params;
         return $user;
     }
 
@@ -37,15 +38,6 @@ class Login
     private function checkInput($value) {
         $err = "${value}は入力必須です。";
         return $err;
-    }
-   
-    //確認用パスワードは同じ値を求める。
-    private function samePass($a, $b) {
-        if ($a !== $b) {
-            $err = 'パスワードが一致しません。';
-            return $err;
-        } 
-        
     }
 
     //メアドの正規表現。誤っていればエラーが返される。
@@ -62,4 +54,5 @@ class Login
             }//ユーザーから入力があり、かつ正規表現から外れた場合にエラー表示。
         }
     }
+
 }

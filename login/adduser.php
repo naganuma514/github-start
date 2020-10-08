@@ -1,19 +1,20 @@
 <?php
 
-    ini_set('display_errors', true);
-    error_reporting(E_ALL);
+ini_set('display_errors', true);
+error_reporting(E_ALL);
 
-    //セッションスタート。
-    session_start();
+//セッションスタート。
+session_start();
 
-    //DBとClassの読み込み。
-    require 'database.php';
-    require './class/login_class.php';
+//DBとClassの読み込み。
+require 'database.php';
+require './class/register_class.php';
 
-    //ログインインスタンス生成。
-    $login = new Login();
-    $err = $login->Validation();
-    $user = $login->getUserInfo();
+$err = [];
+$register = new Register();
+if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
+    $err = $register->Validation();
+    $user = $register->getUserInfo();
 
     if (count($err) === 0) {
         // DB接続
@@ -23,14 +24,13 @@
         $stmt = $pdo->prepare('INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)');
 
         // パラメータ設定
-        $params = [];
-        $params[] = $user->user_name;
-        $params[] = $user->email;
-        $params[] = password_hash($user->password, PASSWORD_DEFAULT);
+        $pass_hash = password_hash($user->password, PASSWORD_DEFAULT);
+        $params = [0 => $user->user_name, 1 => $user->email, 2 => $pass_hash];
 
         // SQL実行
         $success = $stmt->execute($params);
     }
+}
 ?>
 <!DOCTYPE HTML>
 <html lang="ja">
@@ -42,7 +42,7 @@
 </head>
 
 <body>
-    <?php if (count($err) > 0) : ?>
+    <?php if (count($err) !== 0) : ?>
         <?php foreach ($err as $e) : ?>
             <p class="error"><?php echo h($e); ?></p>
         <?php endforeach; ?>

@@ -5,22 +5,14 @@ error_reporting(E_ALL);
 session_start();
 
 require 'database.php';
+require './class/login_class.php';
 
 $err = [];
-
-// 「ログイン」ボタンが押されて、POST通信のとき
+$login = new Login();
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
-    $email = filter_input(INPUT_POST, 'email');
-    $password = filter_input(INPUT_POST, 'password');
+    $err = $login->Validation();
+    $user = $login->getUserInfo();
 
-    if ($email === '') {
-        $err['email'] = 'メールアドレスは入力必須です。';
-    }
-    if ($password === '') {
-        $err['password'] = 'パスワードは入力必須です。';
-    }
-
-    // エラーがないとき
     if (count($err) === 0) {
         // DB接続
         $pdo = connect();
@@ -29,15 +21,14 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         $stmt = $pdo->prepare('SELECT * FROM USER WHERE email = ?');
 
         // パラメータ設定
-        $params = [];
-        $params[] = $email;
+        $params = [0 => $user->email];
 
         // SQL実行
         $success = $stmt->execute($params);
 
         $row = $stmt->fetch();
 
-        if (password_verify($password, $row['password'])) {
+        if (password_verify($user->password, $row['password'])) {
             session_regenerate_id(true);
             $_SESSION['login_user'] = $row;
             header('Location:main.php');
@@ -50,33 +41,39 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 ?>
 <!DOCTYPE HTML>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>ログイン</title>
-        <link rel="stylesheet" href="./css/style.css">
-    </head>
-    <body>
-        <fieldset class="form-frame">
-            <legend>ログインフォーム</legend>
-            <?php if (isset($err['login'])) : ?>
-                <p class="error"><?php echo h($err['login']); ?></p>
-            <?php endif; ?>
-            <form action="" method="post">
-                <p>
-                    <label class="form-frame__label" for="email">メールアドレス</label>
-                    <input id="email" name="email" type="email" />
-                </p>
-                <p>
-                    <label class="form-frame__label"  for="password">パスワード</label>
-                    <input id="password" name="password" type="password" />
-                </p>
-                <p>
-                    <button type="submit">ログイン</button>
-                </p>
-                <p>
-                    <a href="adduser.php">新規ユーザー登録</a>
-                </p>
-            </form>
-        </fieldset>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <fieldset class="form-frame">
+        <legend>ログインフォーム</legend>
+        <?php if (count($err) !== 0) : ?>
+            <?php foreach ($err as $e) : ?>
+                <p class="error"><?php echo h($e); ?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <form action="" method="post">
+            <p>
+                <label class="form-frame__label" for="email">メールアドレス</label>
+                <input id="email" name="email" type="email" />
+            </p>
+            <p>
+                <label class="form-frame__label" for="password">パスワード</label>
+                <input id="password" name="password" type="password" />
+            </p>
+            <p>
+                <button type="submit">ログイン</button>
+            </p>
+            <p>
+                <a href="adduser.php">新規ユーザー登録</a>
+            </p>
+        </form>
+    </fieldset>
+</body>
+
 </html>
