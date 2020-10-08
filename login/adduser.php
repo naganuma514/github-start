@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 //DBとClassの読み込み。
-require 'database.php';
+require './tools/database.php';
 require './class/register_class.php';
 
 $err = [];
@@ -42,18 +42,17 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 </head>
 
 <body>
-    <?php if (count($err) !== 0) : ?>
-        <?php foreach ($err as $e) : ?>
-            <p class="error"><?php echo h($e); ?></p>
-        <?php endforeach; ?>
-    <?php endif; ?>
-
     <?php if (isset($success) && $success) : ?>
         <p>登録に成功しました。</p>
         <p><a href="index.php">こちらからログインしてください。</a></p>
     <?php else : ?>
         <fieldset class="form-frame">
             <legend>新規アカウント登録フォーム</legend>
+            <?php if (count($err) !== 0) : ?>
+                <?php foreach ($err as $e) : ?>
+                    <p class="error">・<?php echo h($e); ?></p>
+                <?php endforeach; ?>
+            <?php endif; ?>
             <form action="" method="post">
                 <p>
                     <label class="form-frame__label" for="user_name">ユーザー名</label>

@@ -5,12 +5,12 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
+require './tools/database.php';
+require './class/login_class.php';
+
 if(isset($login_user)){
     header('Location:main.php');
 }
-
-require 'database.php';
-require './class/login_class.php';
 
 $err = [];
 $login = new Login();
@@ -34,10 +34,10 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         $row = $stmt->fetch();
 
         if (password_verify($user->password, $row['password'])) {
+            session_regenerate_id(true);
+            header('Location:main.php');
             if(!isset($login_user)) {
-                session_regenerate_id(true);
                 $_SESSION['login_user'] = $row;
-                header('Location:main.php');
             }
             return;
         }
@@ -60,14 +60,14 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         <legend>ログインフォーム</legend>
         <?php if (count($err) !== 0) : ?>
             <?php foreach ($err as $e) : ?>
-                <p class="error"><?php echo h($e); ?></p>
+                <p class="error">・<?php echo h($e); ?></p>
             <?php endforeach; ?>
         <?php endif; ?>
 
         <form action="" method="post">
             <p>
                 <label class="form-frame__label" for="email">メールアドレス</label>
-                <input id="email" name="email" type="email" />
+                <input id="email" name="email" type="text" />
             </p>
             <p>
                 <label class="form-frame__label" for="password">パスワード</label>

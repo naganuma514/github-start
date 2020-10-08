@@ -34,4 +34,3 @@ function connect()
 
     return $pdo;
 }
-?>
