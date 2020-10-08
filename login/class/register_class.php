@@ -10,18 +10,18 @@ class Register
 
         $this->params = filter_input_array(INPUT_POST, [
             'user_name' => FILTER_DEFAULT,
-            'email' => FILTER_VALIDATE_EMAIL,
+            'email' => FILTER_DEFAULT,
             'password' => FILTER_DEFAULT,
             'password_conf' => FILTER_DEFAULT
         ]);
 
         foreach ((array)$this->params as $key => $value) {
-            if ($value === false) {
+            if ($value === '') {
                 $err[] = $this->checkInput($key);
             }
         }
 
-        if ($this->mailCheck($this->params['email'])) {
+        if ($this->params['email'] !== '' && $this->mailCheck($this->params['email'])) {
             $err[] = "メールアドレスの入力に誤りがあります";
         }
 

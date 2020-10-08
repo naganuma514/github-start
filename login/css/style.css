@@ -1,12 +1,36 @@
 .form-frame {
-    margin: 0 auto;
-    width: 50%;
+  margin: 0 auto;
+  width: 30%;
 }
 
 .form-frame__label {
-    width: 30px;
+  width: 200px;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro',
+    'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'ＭＳ Ｐゴシック',
+    'MS PGothic', sans-serif;
+  box-sizing: border-box;
+}
+
+p {
+  display: flex;
+  flex-direction: column;
+  font-size: 25px;
+}
+
+input {
+  font-size: 25px;
+}
+
+button {
+  font-size: 20px;
 }
 
 .error {
-    color: red;
+  color: red;
+  font-size: 20px;
 }

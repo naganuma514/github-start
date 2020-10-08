@@ -3,11 +3,11 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
+require './tools/database.php';
+
 if (!isset($login_user)) {
     header('Location:index.php');
 }
-
-require 'database.php';
 
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
     unset($_SESSION['login_user']);
@@ -22,6 +22,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title><?php echo $login_user['user_name']; ?>のアカウントページ</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
