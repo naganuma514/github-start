@@ -8,90 +8,78 @@ session_start();
 
 //DBとClassの読み込み。
 require 'database.php';
-require dirname(__FILE__) . '/add_class.php';
+require './class/register_class.php';
 
-$err=[]; //エラーメッセージ格納配列。
+$err = [];
+$register = new Register();
+if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
+    $err = $register->Validation();
+    $user = $register->getUserInfo();
 
-//ログインインスタンス生成。
-$user1=new Login();
-$user1->firstLogin(); //新規登録用メソッド。
-    
-//各ゲッターを変数に代入。
-    $mail = $user1->getMail();
-    $password = $user1->getPassword();
-    $password_conf = $user1->getPassword_conf();
-
-    //メアド、パスワードの入力チェック。未入力ならそれぞれエラーが代入される。
-    $err['mail'] = $user1->checkInput($mail, 'メールアドレス');
-    $err['pass'] = $user1->checkInput($password, 'パスワード');
-
-    //確認用パスワードが一致しているか調べ、異なればエラーが変数に代入される。
-    $err['same'] = $user1->samePass($password, $password_conf);
-
-    //メアドの正規表現。誤っていればエラーが返される。
-    $err['mail_check'] = $user1->mailCheck($mail);
-    //エラーが飛ばされていれば、それを配列から取り出して表示。
-    if (isset($err)) {
-        $user1->errCheck($err);
-    } elseif (count($err)===0) {
+    if (count($err) === 0) {
         // DB接続
         $pdo = connect();
 
         // ステートメント
-        $stmt = $pdo->prepare('INSERT INTO `User` (`id`, `user_name`, `password`) VALUES (null, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)');
 
         // パラメータ設定
-        $params = [];
-        $params[] = $mail;
-        $params[] = password_hash($password, PASSWORD_DEFAULT);
+        $pass_hash = password_hash($user->password, PASSWORD_DEFAULT);
+        $params = [0 => $user->user_name, 1 => $user->email, 2 => $pass_hash];
 
         // SQL実行
         $success = $stmt->execute($params);
-    
+    }
 }
 ?>
 <!DOCTYPE HTML>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-        <style type="text/css">
-            .error {
-                color: red;
-            }
-        </style>
-    </head>
-    <body>
-        <?php if (count($err) > 0) : ?>
-            <?php foreach ($err as $e): ?>
-                <p class="error"><?php echo h($e); ?></p>
-            <?php endforeach; ?>
-        <?php endif; ?>
 
-        <?php if (isset($success) && $success) : ?>
-            <p>登録に成功しました。</p>
-            <p><a href="index.php">こちらからログインしてください。</a></p>
-        <?php else: ?>
+<head>
+    <meta charset="UTF-8">
+    <title>新規アカウント登録</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <?php if (count($err) !== 0) : ?>
+        <?php foreach ($err as $e) : ?>
+            <p class="error"><?php echo h($e); ?></p>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if (isset($success) && $success) : ?>
+        <p>登録に成功しました。</p>
+        <p><a href="index.php">こちらからログインしてください。</a></p>
+    <?php else : ?>
+        <fieldset class="form-frame">
+            <legend>新規アカウント登録フォーム</legend>
             <form action="" method="post">
                 <p>
-                    <label for="user_name">ユーザー名</label>
-                    <input id="user_id" name="mail" type="text" />
+                    <label class="form-frame__label" for="user_name">ユーザー名</label>
+                    <input id="user_name" name="user_name" type="text" />
                 </p>
                 <p>
-                    <label for="">パスワード</label>
+                    <label class="form-frame__label" for="email">メールアドレス</label>
+                    <input id="email" name="email" type="text" />
+                </p>
+                <p>
+                    <label class="form-frame__label" for="password">パスワード</label>
                     <input id="password" name="password" type="password" />
                 </p>
                 <p>
-                    <label for="">確認用パスワード</label>
+                    <label class="form-frame__label" for="password_conf">確認用パスワード</label>
                     <input id="password_conf" name="password_conf" type="password" />
                 </p>
                 <p>
-                    <button type="submit">ログイン</button>
+                    <button type="submit">登録</button>
                 </p>
                 <p>
-                    <a href="adduser.php">新規ユーザー登録</a>
+                    <a href="index.php">ログイン</a>
                 </p>
             </form>
-        <?php endif; ?>
-    </body>
+        </fieldset>
+    <?php endif; ?>
+</body>
+
 </html>
