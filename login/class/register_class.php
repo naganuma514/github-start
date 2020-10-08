@@ -1,4 +1,3 @@
-
 <?php
 // レジスタークラス(新規登録)
 class Register
@@ -21,19 +20,16 @@ class Register
                 $err[] = $this->checkInput($key);
             }
         }
-        
-        if(isset($this->params['email'])) {
-            $Emsg = $this->mailCheck($this->params['email']);
-            if(isset($Emsg)) {
-                $err[] = $Emsg;
-            }
+
+        if ($this->mailCheck($this->params['email'])) {
+            $err[] = "メールアドレスの入力に誤りがあります";
         }
 
-        if(isset($this->params['password']) && isset($this->params['password_conf'])) {
-            $Emsg = $this->samePass($this->params['password'], $this->params['password_conf']);
-            if(isset($Emsg)) {
-                $err[] = $Emsg;
-            }
+        $pass = $this->params['password'];
+        $pass_conf = $this->params['password_conf'];
+
+        if ($pass !== $pass_conf) {
+            $err[] = 'パスワードが一致しません。';
         }
 
 
@@ -54,21 +50,14 @@ class Register
         return $err;
     }
 
-    //確認用パスワードは同じ値を求める。
-    private function samePass($a, $b)
-    {
-        if ($a !== $b) {
-            $err = 'パスワードが一致しません。';
-            return $err;
-        }
-    }
-
-    //メアドの正規表現。誤っていればエラーが返される。
+    //メアドの正規表現。誤っていればtrueが返される。
     private function mailCheck($mail)
     {
         $reg_str = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
-        if (!preg_match($reg_str, $mail)) {
-            return "メールアドレスの入力に誤りがあります";
+        if (preg_match($reg_str, $mail)) {
+            return  false;
+        } else {
+            return true;
         }
     }
 }

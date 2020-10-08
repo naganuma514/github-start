@@ -3,7 +3,7 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
-if(!isset($login_user)){
+if (!isset($login_user)) {
     header('Location:index.php');
 }
 
