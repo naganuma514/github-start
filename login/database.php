@@ -7,16 +7,17 @@ function h($string)
 
 function connect()
 {
-    /* ！Docker 設定に合わせた接続設定
-        $dsn = 'mysql:host=mysql;dbname=login;charset=utf8mb4;'; // Dockerの設定に合わせて変更
-        $username = 'root';
-        $password = 'password'; // Dockerの設定に合わせて変更
-    */
-
-    // 元の設定
-    $dsn = 'mysql:host=localhost;dbname=login;charset=utf8mb4;';
+    //！Docker 設定に合わせた接続設定
+    $dsn = 'mysql:host=mysql;dbname=login;charset=utf8mb4;'; // Dockerの設定に合わせて変更
     $username = 'root';
-    $password = '';
+    $password = 'password'; // Dockerの設定に合わせて変更
+
+    /* 
+        // 元の設定
+        $dsn = 'mysql:host=localhost;dbname=login;charset=utf8mb4;';
+        $username = 'root';
+        $password = '';
+    */
 
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

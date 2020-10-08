@@ -1,0 +1,12 @@
+.form-frame {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.form-frame__label {
+    width: 30px;
+}
+
+.error {
+    color: red;
+}
