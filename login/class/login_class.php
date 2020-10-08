@@ -14,7 +14,7 @@ class Login
         ]);
 
         foreach((array)$this->params as $key => $value) {
-            if($value === NULL || $value == false) {
+            if($value === false) {
                 $err[] = $this->checkInput($key);
             }
         }

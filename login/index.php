@@ -1,8 +1,13 @@
 <?php
-ini_set('display_errors', true);
-error_reporting(E_ALL);
+// ini_set('display_errors', true);
+// error_reporting(E_ALL);
 
 session_start();
+$login_user = $_SESSION['login_user'];
+
+if(isset($login_user)){
+    header('Location:main.php');
+}
 
 require 'database.php';
 require './class/login_class.php';
@@ -29,9 +34,11 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         $row = $stmt->fetch();
 
         if (password_verify($user->password, $row['password'])) {
-            session_regenerate_id(true);
-            $_SESSION['login_user'] = $row;
-            header('Location:main.php');
+            if(!isset($login_user)) {
+                session_regenerate_id(true);
+                $_SESSION['login_user'] = $row;
+                header('Location:main.php');
+            }
             return;
         }
 
