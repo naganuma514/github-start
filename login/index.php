@@ -36,7 +36,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         $pdo = connect();
 
         // ステートメント
-        $stmt = $pdo->prepare('INSERT INTO `User` (`id`, `user_name`, `password`) VALUES (null, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO `USER` (`id`, `user_name`, `password`) VALUES (null, ?, ?)');
 
         // パラメータ設定
         $params = [];
