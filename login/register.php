@@ -41,11 +41,13 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
 <body>
     <?php if (isset($success) && $success) : ?>
-        <p>登録に成功しました。</p>
-        <p><a href="index.php">こちらからログインしてください。</a></p>
+        <div class="form-frame">
+            <p>登録に成功しました。</p>
+            <p><a href="index.php">こちらからログインしてください。</a></p>
+        </div>
     <?php else : ?>
         <fieldset class="form-frame">
-            <legend>新規アカウント登録フォーム</legend>
+            <legend>新規アカウント登録</legend>
             <?php if (count($err) !== 0) : ?>
                 <?php foreach ($err as $e) : ?>
                     <p class="error">・<?php echo h($e); ?></p>

@@ -27,12 +27,15 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
 <body>
     <?php if ($login_user) : ?>
-        <?php foreach ($login_user as $key => $val) : ?>
-            <p><?php echo h($key); ?> : <?php echo h($val); ?></p>
-        <?php endforeach; ?>
-        <form action="" method="post">
-            <input type="submit" name="logout" value="ログアウト">
-        </form>
+        <fieldset class="form-frame">
+        <legend>Successful</legend>
+            <?php foreach ($login_user as $key => $val) : ?>
+                <p><?php echo h($key); ?> : <?php echo h($val); ?></p>
+            <?php endforeach; ?>
+            <form action="" method="post">
+                <input type="submit" name="logout" value="ログアウト">
+            </form>
+        </fieldset>
     <?php endif; ?>
 </body>
 
