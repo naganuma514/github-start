@@ -5,11 +5,12 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
-require './tools/database.php';
-require './class/login_class.php';
+require './tools/tools.php';
+require './database/database.php';
+require './Authentication/login_class.php';
 
 if(isset($login_user)){
-    header('Location:main.php');
+    header('Location:account.php');
 }
 
 $err = [];
@@ -20,22 +21,17 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
     if (count($err) === 0) {
         // DB接続
-        $pdo = connect();
+        $database = new DatabBase();
 
-        // ステートメント
-        $stmt = $pdo->prepare('SELECT * FROM USER WHERE email = ?');
-
-        // パラメータ設定
+        // SQL、パラメータ定義
+        $sql_sentence = 'SELECT * FROM USER WHERE email = ?';
         $params = [0 => $user->email];
 
-        // SQL実行
-        $success = $stmt->execute($params);
+        $row = $database->queryfetch($sql_sentence, $params);
 
-        $row = $stmt->fetch();
-
-        if (password_verify($user->password, $row['password'])) {
+        if (count($row) !== 0 && password_verify($user->password, $row['password'])) {
             session_regenerate_id(true);
-            header('Location:main.php');
+            header('Location:account.php');
             if(!isset($login_user)) {
                 $_SESSION['login_user'] = $row;
             }
@@ -77,7 +73,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
                 <button type="submit">ログイン</button>
             </p>
             <p>
-                <a href="adduser.php">新規ユーザー登録</a>
+                <a href="register.php">新規ユーザー登録</a>
             </p>
         </form>
     </fieldset>

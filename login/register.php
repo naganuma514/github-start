@@ -7,8 +7,8 @@ error_reporting(E_ALL);
 session_start();
 
 //DBとClassの読み込み。
-require './tools/database.php';
-require './class/register_class.php';
+require './database/database.php';
+require './Authentication/register_class.php';
 
 $err = [];
 $register = new Register();
@@ -18,17 +18,15 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
     if (count($err) === 0) {
         // DB接続
-        $pdo = connect();
+        $database = new DatabBase();
 
-        // ステートメント
-        $stmt = $pdo->prepare('INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)');
-
-        // パラメータ設定
+        // SQL、パラメータ定義
+        $sql_sentence = 'INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)';
         $pass_hash = password_hash($user->password, PASSWORD_DEFAULT);
         $params = [0 => $user->user_name, 1 => $user->email, 2 => $pass_hash];
 
         // SQL実行
-        $success = $stmt->execute($params);
+        $success = $database->query($sql_sentence,  $params);
     }
 }
 ?>
@@ -43,11 +41,13 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
 <body>
     <?php if (isset($success) && $success) : ?>
-        <p>登録に成功しました。</p>
-        <p><a href="index.php">こちらからログインしてください。</a></p>
+        <div class="form-frame">
+            <p>登録に成功しました。</p>
+            <p><a href="index.php">こちらからログインしてください。</a></p>
+        </div>
     <?php else : ?>
         <fieldset class="form-frame">
-            <legend>新規アカウント登録フォーム</legend>
+            <legend>新規アカウント登録</legend>
             <?php if (count($err) !== 0) : ?>
                 <?php foreach ($err as $e) : ?>
                     <p class="error">・<?php echo h($e); ?></p>
