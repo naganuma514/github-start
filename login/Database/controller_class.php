@@ -1,8 +1,8 @@
 <?php
 
-require 'pdo_wrapper.php';
+require 'pdo_wrapper_class.php';
 
-class DatabBase
+class Controller
 {
     private $pdo = null;
 

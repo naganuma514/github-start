@@ -6,7 +6,7 @@ session_start();
 $login_user = $_SESSION['login_user'];
 
 require './tools/tools.php';
-require './database/database.php';
+require './Database/controller_class.php';
 require './Authentication/login_class.php';
 
 if(isset($login_user)){
@@ -21,7 +21,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
     if (count($err) === 0) {
         // DB接続
-        $database = new DatabBase();
+        $database = new Controller();
 
         // SQL、パラメータ定義
         $sql_sentence = 'SELECT * FROM USER WHERE email = ?';
