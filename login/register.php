@@ -7,8 +7,8 @@ error_reporting(E_ALL);
 session_start();
 
 //DBとClassの読み込み。
-require './DB/database.php';
-require './AuthenticationClass/register_class.php';
+require './database/database.php';
+require './Authentication/register_class.php';
 
 $err = [];
 $register = new Register();

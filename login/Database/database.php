@@ -1,6 +1,6 @@
 <?php
 
-require './DB/PodWrapper.php';
+require 'PodWrapper.php';
 
 class DatabBase
 {

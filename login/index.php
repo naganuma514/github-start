@@ -5,11 +5,11 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
-require './DB/database.php';
-require './AuthenticationClass/login_class.php';
+require './database/database.php';
+require './Authentication/login_class.php';
 
 if(isset($login_user)){
-    header('Location:main.php');
+    header('Location:account.php');
 }
 
 $err = [];
@@ -29,7 +29,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
         if (password_verify($user->password, $row['password'])) {
             session_regenerate_id(true);
-            header('Location:main.php');
+            header('Location:account.php');
             if(!isset($login_user)) {
                 $_SESSION['login_user'] = $row;
             }
@@ -71,7 +71,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
                 <button type="submit">ログイン</button>
             </p>
             <p>
-                <a href="adduser.php">新規ユーザー登録</a>
+                <a href="register.php">新規ユーザー登録</a>
             </p>
         </form>
     </fieldset>

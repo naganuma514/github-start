@@ -1,6 +1,6 @@
 <?php
 
-require './DB/DatabaseConnectionClass.php';
+require './Database/DatabaseConnectionClass.php';
 
 function getConnectionInfo()
 {
