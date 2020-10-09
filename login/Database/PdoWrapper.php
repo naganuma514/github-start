@@ -11,10 +11,15 @@ class PdoWrapper
     {
     }
 
-    private function init()
+    private function init(): object
     {
         $pdo = null;
         $connection = getConnectionInfo();
+
+        if($connection === null) {
+            throw new Error("connectionが設定されていません。");
+            exit;
+        }
 
         $dsn = $connection->dsn;
         $username = $connection->username;
@@ -34,7 +39,7 @@ class PdoWrapper
         return $pdo;
     }
 
-    public static function getInstance()
+    public static function getInstance(): object
     {
         if (!isset(self::$instance)) {
             self::$instance = new self();
@@ -42,7 +47,7 @@ class PdoWrapper
         return self::$instance;
     }
 
-    public function get()
+    public function get(): object
     {
         if (!isset(self::$pdo)) {
             self::$pdo = $this->init();

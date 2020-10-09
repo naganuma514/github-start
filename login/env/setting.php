@@ -17,7 +17,7 @@ const SETTINGS = [
     ]
 ];
 
-function getConnectionInfo()
+function getConnectionInfo(): object
 {
     $connection = new Connection(SETTINGS, USE_SETTING_INDEX);
     return $connection->getConnection();

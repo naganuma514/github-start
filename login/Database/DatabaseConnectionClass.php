@@ -6,6 +6,7 @@ class Connection {
     function __construct(array $connections, int $setting_index)
     {
         $this->connections = $connections;
+
         if(count($connections) > $setting_index && $setting_index > -1) {
             $this->$setting_index = $setting_index;
         }

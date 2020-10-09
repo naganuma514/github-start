@@ -5,6 +5,7 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
+require './tools/tools.php';
 require './database/database.php';
 require './Authentication/login_class.php';
 
@@ -22,12 +23,13 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         // DB接続
         $database = new DatabBase();
 
+        // SQL、パラメータ定義
         $sql_sentence = 'SELECT * FROM USER WHERE email = ?';
         $params = [0 => $user->email];
 
         $row = $database->queryfetch($sql_sentence, $params);
 
-        if (password_verify($user->password, $row['password'])) {
+        if (count($row) !== 0 && password_verify($user->password, $row['password'])) {
             session_regenerate_id(true);
             header('Location:account.php');
             if(!isset($login_user)) {

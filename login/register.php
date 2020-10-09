@@ -20,9 +20,8 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         // DB接続
         $database = new DatabBase();
 
+        // SQL、パラメータ定義
         $sql_sentence = 'INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)';
-
-        // パラメータ設定
         $pass_hash = password_hash($user->password, PASSWORD_DEFAULT);
         $params = [0 => $user->user_name, 1 => $user->email, 2 => $pass_hash];
 
