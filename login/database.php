@@ -7,14 +7,23 @@ function h($string)
 
 function connect()
 {
-    $dsn = 'mysql:host=localhost;dbname=login;charset=utf8mb4;';
-    $username = 'root';
-    $password = '';
+        $dsn = 'mysql:host=localhost;dbname=login;charset=utf8mb4;';
+        $username = 'root';
+        $password = '';
+
+
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
     ];
-    $pdo = new PDO($dsn, $username, $password, $options);
+
+    $pdo = null;
+
+    try {
+        $pdo = new PDO($dsn, $username, $password, $options);
+    } catch(PDOException $e) {
+        echo '<p>'.$e->getMessage().'</p>';
+    }
+
     return $pdo;
 }
-?>

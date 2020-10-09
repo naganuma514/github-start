@@ -1,76 +1,63 @@
 <?php
-//ログインクラス 
-class Login
+// レジスタークラス(新規登録)
+class Register
 {
-    //メアド、パスワード、確認パスワードプロパティ。
-    private $mail;
-    private $password;
-    private $password_conf;
-    
-    //POSTがあったとき値を各プロパティにセット。
-    public function firstLogin()
+    private $params;
+
+    public function Validation()
     {
-        if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
-            $this->mail = filter_input(INPUT_POST, 'mail');
-            $this->password = filter_input(INPUT_POST, 'password');
-            $this->password_conf = filter_input(INPUT_POST, 'password_conf');
-        }
-    
-        //各ゲッター    
-    }
-    public function getMail()
-    {
-        return $this->mail;
-    }
-    public function getPassword()
-    {
-        return $this->password;
-    }
-    public function getPassword_conf()
-    {
-        return $this->password_conf;
-    }
-    
-    //値がPOSTされていれば、フィルターを適用し、プロパティに代入。
-    public function checkInput($text,$value) {
-        if ($text === '') {
-            $err = "${value}は入力必須です。";
-            return $err;
-        }
-    }
-   
-    //確認用パスワードは同じ値を求める。
-    public function samePass($a,$b) {
-        if ($a !== $b) {
-            $err = 'パスワードが一致しません。';
-            return $err;
-        } 
-        
-    } 
-   
-    //エラー時エラー内容を表示。
-    public function errCheck($err) {
-        if(isset($err)) {
-            foreach($err as $er) {
-                echo $er;
+        $err = [];
+
+        $this->params = filter_input_array(INPUT_POST, [
+            'user_name' => FILTER_DEFAULT,
+            'email' => FILTER_DEFAULT,
+            'password' => FILTER_DEFAULT,
+            'password_conf' => FILTER_DEFAULT
+        ]);
+
+        foreach ((array)$this->params as $key => $value) {
+            if ($value === '') {
+                $err[] = $this->checkInput($key);
             }
         }
+
+        if ($this->params['email'] !== '' && $this->mailCheck($this->params['email'])) {
+            $err[] = "メールアドレスの入力に誤りがあります";
+        }
+
+        $pass = $this->params['password'];
+        $pass_conf = $this->params['password_conf'];
+
+        if ($pass !== $pass_conf) {
+            $err[] = 'パスワードが一致しません。';
+        }
+
+
+        return $err;
     }
-    
-    //メアドの正規表現。誤っていればエラーが返される。
-    public function mailCheck($mail) {
+
+    public function getUserInfo()
+    {
+        $user = (object)$this->params;
+        unset($user->password_conf);
+        return $user;
+    }
+
+    //値がPOSTされていれば、フィルターを適用し、プロパティに代入。
+    private function checkInput($value)
+    {
+        $err = "${value}は入力必須です。";
+        return $err;
+    }
+
+    //メアドの正規表現。誤っていればtrueが返される。
+    private function mailCheck($mail)
+    {
         $reg_str = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
         if (preg_match($reg_str, $mail)) {
-    //正規表現がTRUEなら何もしない。
-        } else if(empty($mail)) {
-    //空欄なら何もしない。
+            return  false;
         } else {
-            if(isset($mail)) {
-                $e = "メールアドレスの入力に誤りがあります";
-                return $e;  
-            }//ユーザーから入力があり、かつ正規表現から外れた場合にエラー表示。
+            return true;
         }
     }
 }
-
-?>
