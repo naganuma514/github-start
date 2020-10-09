@@ -8,7 +8,7 @@ session_start();
 
 //DBとClassの読み込み。
 require './tools/database.php';
-require './class/register_class.php';
+require './AuthenticationClass/register_class.php';
 
 $err = [];
 $register = new Register();

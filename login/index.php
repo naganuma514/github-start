@@ -6,7 +6,7 @@ session_start();
 $login_user = $_SESSION['login_user'];
 
 require './tools/database.php';
-require './class/login_class.php';
+require './AuthenticationClass/login_class.php';
 
 if(isset($login_user)){
     header('Location:main.php');
