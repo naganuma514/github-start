@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 //DBとClassの読み込み。
-require './database/database.php';
+require './Database/controller_class.php';
 require './Authentication/register_class.php';
 
 $err = [];
@@ -18,7 +18,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
     if (count($err) === 0) {
         // DB接続
-        $database = new DatabBase();
+        $database = new Controller();
 
         // SQL、パラメータ定義
         $sql_sentence = 'INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)';
