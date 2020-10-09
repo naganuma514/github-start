@@ -1,6 +1,6 @@
 <?php
 
-require './Database/DatabaseConnectionClass.php';
+require './Database/database_connection.php';
 
 const USE_SETTING_INDEX = 1;
 
