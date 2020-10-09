@@ -5,7 +5,7 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
-require './tools/database.php';
+require './DB/database.php';
 require './AuthenticationClass/login_class.php';
 
 if(isset($login_user)){
@@ -20,18 +20,12 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
     if (count($err) === 0) {
         // DB接続
-        $pdo = connect();
+        $database = new DatabBase();
 
-        // ステートメント
-        $stmt = $pdo->prepare('SELECT * FROM USER WHERE email = ?');
-
-        // パラメータ設定
+        $sql_sentence = 'SELECT * FROM USER WHERE email = ?';
         $params = [0 => $user->email];
 
-        // SQL実行
-        $success = $stmt->execute($params);
-
-        $row = $stmt->fetch();
+        $row = $database->queryfetch($sql_sentence, $params);
 
         if (password_verify($user->password, $row['password'])) {
             session_regenerate_id(true);

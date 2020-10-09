@@ -3,7 +3,7 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
-require './tools/database.php';
+require './tools/tools.php';
 
 if (!isset($login_user)) {
     header('Location:index.php');

@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 //DBとClassの読み込み。
-require './tools/database.php';
+require './DB/database.php';
 require './AuthenticationClass/register_class.php';
 
 $err = [];
@@ -18,17 +18,16 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 
     if (count($err) === 0) {
         // DB接続
-        $pdo = connect();
+        $database = new DatabBase();
 
-        // ステートメント
-        $stmt = $pdo->prepare('INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)');
+        $sql_sentence = 'INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)';
 
         // パラメータ設定
         $pass_hash = password_hash($user->password, PASSWORD_DEFAULT);
         $params = [0 => $user->user_name, 1 => $user->email, 2 => $pass_hash];
 
         // SQL実行
-        $success = $stmt->execute($params);
+        $success = $database->query($sql_sentence,  $params);
     }
 }
 ?>
