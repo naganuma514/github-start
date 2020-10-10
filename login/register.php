@@ -7,6 +7,7 @@
 session_start();
 
 require_once './Database/controller_class.php';
+require_once './tools/tools.php';
 require_once './Authentication/register_class.php';
 
 $err = [];
