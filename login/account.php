@@ -33,7 +33,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
                 <p><?php echo h($key); ?> : <?php echo h($val); ?></p>
             <?php endforeach; ?>
             <form action="" method="post">
-                <input type="submit" name="logout" value="ログアウト">
+                <button type="submit">ログアウト</button>
             </form>
         </fieldset>
     <?php endif; ?>
