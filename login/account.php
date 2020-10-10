@@ -28,7 +28,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
 <body>
     <?php if ($login_user) : ?>
         <fieldset class="form-frame">
-        <legend>Successful</legend>
+            <legend>Successful</legend>
             <?php foreach ($login_user as $key => $val) : ?>
                 <p><?php echo h($key); ?> : <?php echo h($val); ?></p>
             <?php endforeach; ?>

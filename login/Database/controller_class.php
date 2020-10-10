@@ -23,7 +23,7 @@ class Controller
         $stmt->execute($params);
         $result = $stmt->fetch();
 
-        if(gettype($result) === 'array') {
+        if (gettype($result) === 'array') {
             return $result;
         } else {
             return [];

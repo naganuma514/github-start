@@ -16,7 +16,7 @@ class PdoWrapper
         $pdo = null;
         $connection = env_parser(read_env_file());
 
-        if($connection === null) {
+        if ($connection === null) {
             return null;
         }
 
@@ -51,10 +51,10 @@ class PdoWrapper
         if (!isset(self::$pdo)) {
             try {
                 self::$pdo = $this->init();
-                if(self::$pdo === null) {
+                if (self::$pdo === null) {
                     throw new Exception();
                 }
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 echo 'env設定が正しくありません。';
             }
         }
