@@ -16,8 +16,8 @@ if (isset($login_user)) {
 $err = [];
 $login = new Login();
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
-    $err = $login->Validation();
-    $user = $login->getUserInfo();
+    $err = $login->validation();
+    $user = $login->get_user_info();
 
     if (count($err) === 0) {
         // DB接続
@@ -27,7 +27,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         $sql_sentence = 'SELECT * FROM USER WHERE email = ?';
         $params = [0 => $user->email];
 
-        $row = $database->queryfetch($sql_sentence, $params);
+        $row = $database->query_fetch($sql_sentence, $params);
 
         if (count($row) !== 0 && password_verify($user->password, $row['password'])) {
             session_regenerate_id(true);

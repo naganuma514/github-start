@@ -4,7 +4,7 @@ class Register
 {
     private $params;
 
-    public function Validation()
+    public function validation()
     {
         $err = [];
 
@@ -17,11 +17,11 @@ class Register
 
         foreach ((array)$this->params as $key => $value) {
             if ($value === '') {
-                $err[] = $this->checkInput($key);
+                $err[] = $this->check_input($key);
             }
         }
 
-        if ($this->params['email'] !== '' && $this->mailCheck($this->params['email'])) {
+        if ($this->params['email'] !== '' && $this->mail_check($this->params['email'])) {
             $err[] = "メールアドレスの入力に誤りがあります";
         }
 
@@ -36,7 +36,7 @@ class Register
         return $err;
     }
 
-    public function getUserInfo()
+    public function get_user_info()
     {
         $user = (object)$this->params;
         unset($user->password_conf);
@@ -44,14 +44,14 @@ class Register
     }
 
     //値がPOSTされていれば、フィルターを適用し、プロパティに代入。
-    private function checkInput($value)
+    private function check_input($value)
     {
         $err = "${value}は入力必須です。";
         return $err;
     }
 
     //メアドの正規表現。誤っていればtrueが返される。
-    private function mailCheck($mail)
+    private function mail_check($mail)
     {
         $reg_str = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
         if (preg_match($reg_str, $mail)) {

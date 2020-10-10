@@ -13,8 +13,8 @@ require_once './Authentication/register_class.php';
 $err = [];
 $register = new Register();
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
-    $err = $register->Validation();
-    $user = $register->getUserInfo();
+    $err = $register->validation();
+    $user = $register->get_user_info();
 
     if (count($err) === 0) {
         // DB接続

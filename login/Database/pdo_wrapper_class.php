@@ -54,7 +54,7 @@ class PdoWrapper
         return $pdo;
     }
 
-    public static function getInstance(): object
+    public static function get_instance(): object
     {
         if (!isset(self::$instance)) {
             self::$instance = new self();
