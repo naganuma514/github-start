@@ -10,9 +10,9 @@ function read_env_file(): string
     return $env_data;
 }
 
-function env_parser(string $env_data): ?object
+function env_parser(array $patterns, callable $f): ?object
 {
-    $patterns = ['database', 'host', 'dbname', 'charset', 'username', 'password'];
+    $env_data = read_env_file();
     $env = [];
 
     foreach ($patterns as $v) {
@@ -26,14 +26,6 @@ function env_parser(string $env_data): ?object
     if (count($env) < 5) {
         return null;
     } else {
-
-        $dsn = $env['database'] . ':host=' . $env['host'] . ';dbname=' . $env['dbname'] . ';charset=' . $env['charset'] . ';';
-        $username = $env['username'];
-        $password = $env['password'];
-        return (object)[
-            "dsn" => $dsn,
-            "username" => $username,
-            "password" => $password
-        ];
+        return (object)$f($env);
     }
 }

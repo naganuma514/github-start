@@ -14,7 +14,23 @@ class PdoWrapper
     private function init(): ?object
     {
         $pdo = null;
-        $connection = env_parser(read_env_file());
+
+        // envから解析して欲しいパターン
+        $patterns = ['database', 'host', 'dbname', 'charset', 'username', 'password'];
+
+        // envから解析したあとどのように処理して欲しいか
+        $f = function (array $env): array {
+            $dsn = $env['database'] . ':host=' . $env['host'] . ';dbname=' . $env['dbname'] . ';charset=' . $env['charset'] . ';';
+            $username = $env['username'];
+            $password = $env['password'];
+            return [
+                "dsn" => $dsn,
+                "username" => $username,
+                "password" => $password
+            ];
+        };
+
+        $connection = env_parser($patterns, $f);
 
         if ($connection === null) {
             return null;
