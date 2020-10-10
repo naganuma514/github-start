@@ -1,6 +1,7 @@
 <?php
 
-function h($string): string
+function h($s): string
 {
-    return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
+    return htmlspecialchars($s, ENT_QUOTES, 'utf-8');
 }
+

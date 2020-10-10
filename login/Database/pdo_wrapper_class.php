@@ -1,6 +1,6 @@
 <?php
 
-require './env/setting.php';
+require './tools/env_parser.php';
 
 class PdoWrapper
 {
@@ -11,14 +11,13 @@ class PdoWrapper
     {
     }
 
-    private function init(): object
+    private function init(): ?object
     {
         $pdo = null;
-        $connection = getConnectionInfo();
+        $connection = env_parser(read_env_file());
 
         if($connection === null) {
-            throw new Error("connectionが設定されていません。");
-            exit;
+            return null;
         }
 
         $dsn = $connection->dsn;
@@ -50,7 +49,14 @@ class PdoWrapper
     public function get(): object
     {
         if (!isset(self::$pdo)) {
-            self::$pdo = $this->init();
+            try {
+                self::$pdo = $this->init();
+                if(self::$pdo === null) {
+                    throw new Exception();
+                }
+            } catch(Exception $e) {
+                echo 'env設定が正しくありません。';
+            }
         }
 
         return self::$pdo;
