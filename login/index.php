@@ -9,7 +9,7 @@ require './tools/tools.php';
 require './Database/controller_class.php';
 require './Authentication/login_class.php';
 
-if(isset($login_user)){
+if (isset($login_user)) {
     header('Location:account.php');
 }
 
@@ -32,7 +32,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         if (count($row) !== 0 && password_verify($user->password, $row['password'])) {
             session_regenerate_id(true);
             header('Location:account.php');
-            if(!isset($login_user)) {
+            if (!isset($login_user)) {
                 $_SESSION['login_user'] = $row;
             }
             return;

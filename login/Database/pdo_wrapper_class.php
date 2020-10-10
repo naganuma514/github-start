@@ -14,9 +14,25 @@ class PdoWrapper
     private function init(): ?object
     {
         $pdo = null;
-        $connection = env_parser(read_env_file());
 
-        if($connection === null) {
+        // envから解析して欲しいパターン
+        $patterns = ['database', 'host', 'dbname', 'charset', 'username', 'password'];
+
+        // envから解析したあとどのように処理して欲しいか
+        $f = function (array $env): array {
+            $dsn = $env['database'] . ':host=' . $env['host'] . ';dbname=' . $env['dbname'] . ';charset=' . $env['charset'] . ';';
+            $username = $env['username'];
+            $password = $env['password'];
+            return [
+                "dsn" => $dsn,
+                "username" => $username,
+                "password" => $password
+            ];
+        };
+
+        $connection = env_parser($patterns, $f);
+
+        if ($connection === null) {
             return null;
         }
 
@@ -51,10 +67,10 @@ class PdoWrapper
         if (!isset(self::$pdo)) {
             try {
                 self::$pdo = $this->init();
-                if(self::$pdo === null) {
+                if (self::$pdo === null) {
                     throw new Exception();
                 }
-            } catch(Exception $e) {
+            } catch (Exception $e) {
                 echo 'env設定が正しくありません。';
             }
         }
