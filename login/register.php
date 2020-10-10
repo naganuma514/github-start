@@ -1,27 +1,27 @@
 <?php
 
-ini_set('display_errors', true);
-error_reporting(E_ALL);
+// ini_set('display_errors', true);
+// error_reporting(E_ALL);
 
 //セッションスタート。
 session_start();
 
-//DBとClassの読み込み。
-require './Database/controller_class.php';
-require './Authentication/register_class.php';
+require_once './Database/controller_class.php';
+require_once './tools/tools.php';
+require_once './Authentication/register_class.php';
 
 $err = [];
 $register = new Register();
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
-    $err = $register->Validation();
-    $user = $register->getUserInfo();
+    $err = $register->validation();
+    $user = $register->get_user_info();
 
     if (count($err) === 0) {
         // DB接続
         $database = new Controller();
 
         // SQL、パラメータ定義
-        $sql_sentence = 'INSERT INTO `USER` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)';
+        $sql_sentence = 'INSERT INTO `user` (`id`, `user_name`, `email`, `password`) VALUES (null, ?, ?, ?)';
         $pass_hash = password_hash($user->password, PASSWORD_DEFAULT);
         $params = [0 => $user->user_name, 1 => $user->email, 2 => $pass_hash];
 

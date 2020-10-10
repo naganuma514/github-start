@@ -23,9 +23,9 @@ function env_parser(array $patterns, callable $f): ?object
         }
     }
 
-    if (count($env) < 5) {
-        return null;
-    } else {
+    if (count($env) === count($patterns)) {
         return (object)$f($env);
+    } else {
+        return null;
     }
 }

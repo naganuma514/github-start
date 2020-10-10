@@ -1,6 +1,6 @@
 <?php
 
-require './tools/env_parser.php';
+require_once './tools/env_parser.php';
 
 class PdoWrapper
 {
@@ -48,13 +48,14 @@ class PdoWrapper
         try {
             $pdo = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
-            echo '<p>' . $e->getMessage() . '</p>';
+            echo $e->getMessage();
+            exit;
         }
 
         return $pdo;
     }
 
-    public static function getInstance(): object
+    public static function get_instance(): object
     {
         if (!isset(self::$instance)) {
             self::$instance = new self();
@@ -72,6 +73,7 @@ class PdoWrapper
                 }
             } catch (Exception $e) {
                 echo 'env設定が正しくありません。';
+                exit;
             }
         }
 

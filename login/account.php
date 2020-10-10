@@ -3,7 +3,7 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
-require './tools/tools.php';
+require_once './tools/tools.php';
 
 if (!isset($login_user)) {
     header('Location:index.php');
@@ -33,7 +33,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
                 <p><?php echo h($key); ?> : <?php echo h($val); ?></p>
             <?php endforeach; ?>
             <form action="" method="post">
-                <input type="submit" name="logout" value="ログアウト">
+                <button type="submit">ログアウト</button>
             </form>
         </fieldset>
     <?php endif; ?>
