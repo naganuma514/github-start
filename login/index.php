@@ -5,9 +5,9 @@
 session_start();
 $login_user = $_SESSION['login_user'];
 
-require './tools/tools.php';
-require './Database/controller_class.php';
-require './Authentication/login_class.php';
+require_once './tools/tools.php';
+require_once './Database/controller_class.php';
+require_once './Authentication/login_class.php';
 
 if (isset($login_user)) {
     header('Location:account.php');

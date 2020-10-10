@@ -1,6 +1,6 @@
 <?php
 
-require './tools/env_parser.php';
+require_once './tools/env_parser.php';
 
 class PdoWrapper
 {

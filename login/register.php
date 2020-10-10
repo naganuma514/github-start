@@ -1,14 +1,13 @@
 <?php
 
-ini_set('display_errors', true);
-error_reporting(E_ALL);
+// ini_set('display_errors', true);
+// error_reporting(E_ALL);
 
 //セッションスタート。
 session_start();
 
-//DBとClassの読み込み。
-require './Database/controller_class.php';
-require './Authentication/register_class.php';
+require_once './Database/controller_class.php';
+require_once './Authentication/register_class.php';
 
 $err = [];
 $register = new Register();

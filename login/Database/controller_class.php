@@ -1,6 +1,6 @@
 <?php
 
-require 'pdo_wrapper_class.php';
+require_once 'pdo_wrapper_class.php';
 
 class Controller
 {

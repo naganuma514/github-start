@@ -2,6 +2,10 @@
 
 session_start();
 
+require_once './tools/console_out.php';
+require_once './tools/tools.php';
+require_once './tools/env_parser.php';
+
 // envから解析して欲しいパターン
 $patterns = ['database', 'host', 'dbname', 'charset', 'username', 'password'];
 
@@ -16,10 +20,6 @@ $f = function (array $env): array {
         "password" => $password
     ];
 };
-
-require './tools/console_out.php';
-require './tools/tools.php';
-require './tools/env_parser.php';
 
 // !!!!　練習以外では表示禁止(DB情報を漏らすことになる)
 $result = env_parser($patterns, $f);
