@@ -48,7 +48,8 @@ class PdoWrapper
         try {
             $pdo = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
-            echo '<p>' . $e->getMessage() . '</p>';
+            echo $e->getMessage();
+            exit;
         }
 
         return $pdo;
@@ -72,6 +73,7 @@ class PdoWrapper
                 }
             } catch (Exception $e) {
                 echo 'env設定が正しくありません。';
+                exit;
             }
         }
 

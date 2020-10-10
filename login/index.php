@@ -24,7 +24,7 @@ if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
         $database = new Controller();
 
         // SQL、パラメータ定義
-        $sql_sentence = 'SELECT * FROM USER WHERE email = ?';
+        $sql_sentence = 'SELECT * FROM user WHERE email = ?';
         $params = [0 => $user->email];
 
         $row = $database->query_fetch($sql_sentence, $params);
