@@ -3,7 +3,7 @@
 // error_reporting(E_ALL);
 
 session_start();
-$login_user = $_SESSION['login_user'];
+$login_user = $_SESSION['login_user'] ?? null;
 
 require_once './tools/tools.php';
 require_once './Database/controller_class.php';
