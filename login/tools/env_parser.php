@@ -17,7 +17,9 @@ function env_parser(array $patterns, callable $f): ?object
 
     foreach ($patterns as $v) {
         /* @var $env_tag array */
-        preg_match('/' . $v . '=.*?\n/', $env_data, $env_tag);
+        if(!preg_match('/' . $v . '=.*?\n/', $env_data, $env_tag) ){
+            continue;
+        }
         $env_tag = preg_replace("/(" . $v . "=|\n)/", '', $env_tag[0]);
         if ($env_tag !== "") {
             $env[$v] = $env_tag;
