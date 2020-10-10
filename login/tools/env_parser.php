@@ -12,7 +12,10 @@ function read_env_file(): string
 
 function env_parser(array $patterns, callable $f): ?object
 {
-    $env_data = read_env_file();
+    //  The .env file may not exist.
+    if(!$env_data = read_env_file() ){
+        return null;
+    };
     $env = [];
 
     foreach ($patterns as $v) {
