@@ -34,7 +34,7 @@ class PdoWrapper
 
         try {
             $connection = env_parser($patterns, $f);
-        } catch(FewParametersException $e) {
+        } catch(TooFewParametersException $e) {
             echo $e->getMessage();
         }
 
