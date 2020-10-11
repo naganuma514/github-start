@@ -30,10 +30,12 @@ class PdoWrapper
             ];
         };
 
-        $connection = env_parser($patterns, $f);
+        $connection = null;
 
-        if ($connection === null) {
-            return null;
+        try {
+            $connection = env_parser($patterns, $f);
+        } catch(FewParametersException $e) {
+            echo $e->getMessage();
         }
 
         $dsn = $connection->dsn;
@@ -49,7 +51,7 @@ class PdoWrapper
             $pdo = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
             echo $e->getMessage();
-            exit;
+            exit();
         }
 
         return $pdo;
@@ -73,7 +75,7 @@ class PdoWrapper
                 }
             } catch (Exception $e) {
                 echo 'env設定が正しくありません。';
-                exit;
+                exit();
             }
         }
 
