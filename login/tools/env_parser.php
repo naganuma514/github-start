@@ -39,7 +39,7 @@ function env_parser(array $patterns, callable $f): object
     }
 
     if (count($env) !== count($patterns)) {
-        throw  new FewParametersException();
+        throw  new TooFewParametersException();
         exit();
     } else {
         return (object)$f($env);
