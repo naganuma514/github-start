@@ -12,7 +12,7 @@ if (!isset($login_user)) {
 if (filter_input(INPUT_SERVER, 'REQUEST_METHOD') === 'POST') {
     unset($_SESSION['login_user']);
     header('Location:index.php');
-    exit;
+    exit();
 }
 ?>
 
